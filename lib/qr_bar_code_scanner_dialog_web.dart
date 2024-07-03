@@ -155,7 +155,7 @@ class QrBarCodeScannerDialogWeb extends QrBarCodeScannerDialogPlatform {
 
   @override
   void scanBarOrQrCode(
-      {BuildContext? context, required Function(String?) onScanSuccess}) {
+      {BuildContext? context, required Function(String?) onScanSuccess,required double width,required double height, required String title}) {
     js.context.callMethod("scanCode", [onScanSuccess]);
   }
 }

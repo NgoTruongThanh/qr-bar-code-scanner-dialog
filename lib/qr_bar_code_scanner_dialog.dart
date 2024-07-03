@@ -8,8 +8,8 @@ class QrBarCodeScannerDialog {
   }
 
   void getScannedQrBarCode(
-      {BuildContext? context, required Function(String?) onCode}) {
+      {BuildContext? context,required double width,required double height, required String title, required Function(String?) onCode}) {
     QrBarCodeScannerDialogPlatform.instance
-        .scanBarOrQrCode(context: context, onScanSuccess: onCode);
+        .scanBarOrQrCode(context: context, onScanSuccess: onCode,title: title,height: height,width: width);
   }
 }

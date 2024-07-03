@@ -8,8 +8,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'qr_bar_code_scanner_dialog_platform_interface.dart';
 
 /// An implementation of [QrBarCodeScannerDialogPlatform] that uses method channels.
-class MethodChannelQrBarCodeScannerDialog
-    extends QrBarCodeScannerDialogPlatform {
+class MethodChannelQrBarCodeScannerDialog extends QrBarCodeScannerDialogPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('qr_bar_code_scanner_dialog');
@@ -23,7 +22,7 @@ class MethodChannelQrBarCodeScannerDialog
 
   @override
   void scanBarOrQrCode(
-      {BuildContext? context, required Function(String? code) onScanSuccess}) {
+      {BuildContext? context, required double width,required double height, required String title ,required Function(String? code) onScanSuccess}) {
     /// context is required to show alert in non-web platforms
     assert(context != null);
 
@@ -32,15 +31,15 @@ class MethodChannelQrBarCodeScannerDialog
         builder: (context) => Container(
               alignment: Alignment.center,
               child: Container(
-                height: 400,
-                width: 600,
+                height: height ,
+                width: width,
                 margin: const EdgeInsets.all(20),
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: ScannerWidget(onScanSuccess: (code) {
+                child: ScannerWidget(title: title,onScanSuccess: (code) {
                   if (code != null) {
                     Navigator.pop(context);
                     onScanSuccess(code);
@@ -52,9 +51,10 @@ class MethodChannelQrBarCodeScannerDialog
 }
 
 class ScannerWidget extends StatefulWidget {
+  final String title;
   final void Function(String? code) onScanSuccess;
 
-  const ScannerWidget({super.key, required this.onScanSuccess});
+  const ScannerWidget({super.key, required this.onScanSuccess,required this.title});
 
   @override
   createState() => _ScannerWidgetState();
@@ -98,7 +98,7 @@ class _ScannerWidgetState extends State<ScannerWidget> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text("Stop scanning"),
+          child:  Text(widget.title),
         ),
       ],
     );
